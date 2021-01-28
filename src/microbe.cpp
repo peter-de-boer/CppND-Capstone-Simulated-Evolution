@@ -1,6 +1,49 @@
 #include "microbe.h"
 
+
 Gene::Gene() {
+};
+
+Gene::~Gene()  {
+}
+
+Gene& Gene::operator=(const Gene& parentGene) {
+  this->_Mutate();
+  return *this;
+}
+
+Gene::Gene(const Gene& parentGene) {
+  _genome = parentGene._genome;
+  this->_Mutate();
+};
+
+std::vector<float> Gene::getGenome() {
+  return _genome;
+}
+
+void Gene::_Mutate() {
+  // choose a random element from the genome
+  // give it a new random number
+  // and normalize again
+  _genome[_disi(_gen)] = _disr(_gen);
+  this->_Normalize();
+}
+
+void Gene::_Normalize() {
+  float sum{0.0};
+  for (int i=0; i < _genome.size(); ++i) {
+    sum += _genome[i];
+  }
+  for (int i=0; i < _genome.size(); ++i) {
+    _genome[i] = _genome[i]/sum;
+  }  
+};
+
+void Gene::Randomize() {
+  for (int i=0; i < _genome.size(); ++i) {
+    _genome[i] = _disr(_gen);
+  }
+  this->_Normalize();
 };
 
 Microbe::Microbe() {
@@ -10,4 +53,7 @@ Microbe::Microbe(Microbe& parent) {
 };
     
 void Microbe::Live() {
+};
+
+Microbe Microbe::Reproduce() {
 };
