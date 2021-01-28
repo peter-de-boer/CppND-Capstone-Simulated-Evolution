@@ -7,6 +7,6 @@ set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 project(Evolution)
 
-add_executable(SimulatedEvolution src/main.cpp src/evolution.cpp src/controller.cpp src/renderer.cpp src/microbe.cpp)
+add_executable(SimulatedEvolution src/main.cpp src/evolution.cpp src/controller.cpp src/renderer.cpp src/microbe.cpp src/gene.cpp)
 
 
