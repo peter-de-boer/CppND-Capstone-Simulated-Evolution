@@ -4,8 +4,11 @@
 Microbe::Microbe() {
 };
 
-Microbe::Microbe(Microbe& parent) {
+Microbe::Microbe(const Microbe& parent) {
 };
+
+Microbe& Microbe::operator=(const Microbe& parent) {
+}
     
 void Microbe::Live() {
 };

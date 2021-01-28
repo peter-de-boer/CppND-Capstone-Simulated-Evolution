@@ -21,7 +21,8 @@ enum Direction {
 class Microbe {
   public:
     Microbe();
-    Microbe(Microbe& parent);
+    Microbe(const Microbe& parent);
+    Microbe& operator=(const Microbe& parent);
     void Live();
     Microbe Reproduce();
   
