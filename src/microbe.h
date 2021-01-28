@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <random>
+#include <memory>
 
 #include "gene.h"
+#include "params.h"
 
 enum Direction {
   kUp,
@@ -20,17 +22,17 @@ enum Direction {
 
 class Microbe {
   public:
-    Microbe();
+    Microbe(std::shared_ptr<ConfigParams> config_params);
     Microbe(const Microbe& parent);
     Microbe& operator=(const Microbe& parent);
     void Live();
     Microbe Reproduce();
   
   private:
-  
     int _energy;
     Direction _direction;
     Gene _gene; 
+    std::shared_ptr<ConfigParams> _config_params;
 };
 
 #endif
