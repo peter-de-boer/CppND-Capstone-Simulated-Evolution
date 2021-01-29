@@ -1,5 +1,4 @@
 #include "evolution.h"
-#include "direction.h"
 
 Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_params(config_params) {
 
@@ -8,7 +7,8 @@ Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_para
 void Evolution::_InitMicrobes() {
     std::uniform_int_distribution<int> disx = std::uniform_int_distribution<int>(0, _config_params->kGridWidth - 1);
     std::uniform_int_distribution<int> disy = std::uniform_int_distribution<int>(0, _config_params->kGridHeight - 1);
-    _microbes.emplace_back(Microbe(disx(_gen), disy(_gen), 100, kUp, _config_params));
+    std::uniform_int_distribution<int> disd = std::uniform_int_distribution<int>(0, 7);
+    _microbes.emplace_back(Microbe(disx(_gen), disy(_gen), 100, disd(_gen), _config_params));
 }
 
 void Evolution::Run(Controller const &controller, Renderer &renderer) {

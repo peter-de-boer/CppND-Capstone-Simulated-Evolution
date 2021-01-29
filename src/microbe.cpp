@@ -2,14 +2,12 @@
 
 #include <iostream>
 
-Microbe::Microbe(int x, int y, int energy, Direction direction, 
+Microbe::Microbe(int x, int y, int energy, int direction, 
                  std::shared_ptr<ConfigParams> config_params) : 
                  _x(x), _y(y), _energy(energy),
                  _direction(direction),
                  _config_params(config_params) {
-  std::cout << "_x: " << _x << "\n";
-  std::cout << "_y: " << _y << "\n";
-  std::cout << "_energy: " << _energy << "\n";
+  _gene.Randomize();
 };
 
 Microbe::Microbe(const Microbe& other) {
@@ -36,7 +34,24 @@ Microbe& Microbe::operator=(const Microbe& other) {
 }
 
 void Microbe::_Move() {
-  _energy += -10;
+  // select change from gene
+  int change_direction = _gene.GetSegment();
+  int _direction = (_direction + change_direction) % 8;
+  int dx, dy;
+  switch (_direction) {
+      case 0: dx = -1; dy =  1; break;
+      case 1: dx =  0; dy =  1; break;
+      case 2: dx =  1; dy =  1; break;
+      case 3: dx =  1; dy =  0; break;
+      case 4: dx =  1; dy = -1; break;
+      case 5: dx =  0; dy = -1; break;
+      case 6: dx = -1; dy = -1; break;
+      case 7: dx = -1; dy =  0; break;
+      default: dx = 0; dy = 0;
+  }
+  _x = (_x + dx) % _config_params->kGridWidth;
+  _y = (_y + dy) % _config_params->kGridHeight;
+  _energy -= _config_params->change_direction_energy[change_direction];
 }
 
 void Microbe::_Eat() {
@@ -47,15 +62,11 @@ bool Microbe::_IsDead() {
 }
 
 void Microbe::Live() {
-  std::cout << "_energy: " << _energy << "\n";
   while (!_IsDead()) {
     _Eat();
     _Reproduce();
     _Move();
-    std::cout << _energy << " ";
   }
-  std::cout << "\n";
-
 };
 
 void Microbe::_Mutate() {

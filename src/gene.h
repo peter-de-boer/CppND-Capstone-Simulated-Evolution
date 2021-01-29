@@ -1,7 +1,6 @@
 #ifndef GENE_H
 #define GENE_H
 
-#include <vector>
 #include <random>
 
 
@@ -9,11 +8,11 @@ class Gene {
   public:
     Gene();
     ~Gene();
-    Gene& operator=(const Gene& parentGene);
-    Gene(const Gene& parentGene);
+    Gene& operator=(const Gene& other);
+    Gene(const Gene& other);
     void Randomize();
     void Mutate();
-    std::vector<float> getGenome();
+    int GetSegment();
   
   private:
     void _Normalize();
