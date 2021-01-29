@@ -1,6 +1,7 @@
 #include "microbe.h"
 
 
+
 Microbe::Microbe(int x, int y, int energy, Direction direction, 
                  std::shared_ptr<ConfigParams> config_params) : 
                  _x(x), _y(y), _direction(direction),
@@ -14,6 +15,7 @@ Microbe& Microbe::operator=(const Microbe& microbe) {
 }
 
 void Microbe::Live() {
+
 };
 
 // return a new microbe with the same genes, but slightly mutated
