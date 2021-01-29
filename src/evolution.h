@@ -7,16 +7,21 @@
 #include "microbe.h"
 
 class Evolution {
- public:
-  Evolution(std::size_t grid_width, std::size_t grid_height);
-  void Run(Controller const &controller, Renderer &renderer,
-           std::size_t target_frame_duration);
+  public:
+    Evolution(std::shared_ptr<ConfigParams> config_params);
+    void Run(Controller const &controller, Renderer &renderer);
 
- private:
+  private:
   
-  std::vector<std::vector<bool>> _food;
-  std::vector<Microbe> _microbes; // smart pointers?
- 
+    std::vector<std::vector<bool>> _food;
+    std::vector<Microbe> _microbes; // smart pointers?
+    std::shared_ptr<ConfigParams> _config_params;
+  
+    std::random_device _rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<int> _disx;
+    std::uniform_int_distribution<int> _disy;
+
 };
 
 #endif

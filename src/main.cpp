@@ -2,19 +2,16 @@
 #include "controller.h"
 #include "evolution.h"
 #include "renderer.h"
+#include "params.h"
 
 int main() {
-  constexpr std::size_t kFramesPerSecond{60};
-  constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
-  constexpr std::size_t kScreenWidth{640};
-  constexpr std::size_t kScreenHeight{640};
-  constexpr std::size_t kGridWidth{32};
-  constexpr std::size_t kGridHeight{32};
 
-  Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
+  std::shared_ptr<ConfigParams> config_params = std::make_shared<ConfigParams>();
+
+  Renderer renderer(config_params);
   Controller controller;
-  Evolution evolution(kGridWidth, kGridHeight);
-  evolution.Run(controller, renderer, kMsPerFrame);
+  Evolution evolution(config_params);
+  evolution.Run(controller, renderer);
   std::cout << "Evolution is finished!\n";
   return 0;
 }

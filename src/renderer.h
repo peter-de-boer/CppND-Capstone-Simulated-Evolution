@@ -2,11 +2,12 @@
 #define RENDERER_H
 
 #include <vector>
+#include <memory>
+#include "params.h"
 
 class Renderer {
  public:
-  Renderer(const std::size_t screen_width, const std::size_t screen_height,
-           const std::size_t grid_width, const std::size_t grid_height);
+  Renderer(std::shared_ptr<ConfigParams> config_params);
   ~Renderer();
 
  private:

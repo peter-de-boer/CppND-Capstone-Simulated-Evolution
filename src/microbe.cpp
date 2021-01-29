@@ -3,6 +3,8 @@
 
 Microbe::Microbe(std::shared_ptr<ConfigParams> config_params) {
   _config_params = config_params;
+
+  _direction = kUp; // TODO: randomize as well
 };
 
 Microbe::Microbe(const Microbe& microbe) {
