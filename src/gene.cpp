@@ -8,20 +8,19 @@ Gene::~Gene()  {
 }
 
 Gene& Gene::operator=(const Gene& parentGene) {
-  this->_Mutate();
+  _genome = parentGene._genome;
   return *this;
 }
 
 Gene::Gene(const Gene& parentGene) {
   _genome = parentGene._genome;
-  this->_Mutate();
 };
 
 std::vector<float> Gene::getGenome() {
   return _genome;
 }
 
-void Gene::_Mutate() {
+void Gene::Mutate() {
   // choose a random element from the genome
   // give it a new random number
   // and normalize again

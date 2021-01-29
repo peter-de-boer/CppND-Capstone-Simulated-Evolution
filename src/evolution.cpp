@@ -8,8 +8,7 @@ Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_para
 void Evolution::_InitMicrobes() {
     std::uniform_int_distribution<int> disx = std::uniform_int_distribution<int>(0, _config_params->kGridWidth - 1);
     std::uniform_int_distribution<int> disy = std::uniform_int_distribution<int>(0, _config_params->kGridHeight - 1);
-    Microbe microbe {Microbe(disx(_gen), disy(_gen), 100, kUp, _config_params)};
-    _microbes.push_back(microbe);
+    _microbes.emplace_back(Microbe(disx(_gen), disy(_gen), 100, kUp, _config_params));
 }
 
 void Evolution::Run(Controller const &controller, Renderer &renderer) {

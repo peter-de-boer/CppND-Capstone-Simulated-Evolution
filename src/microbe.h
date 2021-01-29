@@ -13,12 +13,17 @@
 class Microbe {
   public:
     Microbe(int x, int y, int energy, Direction direction, std::shared_ptr<ConfigParams> config_params);
-    Microbe(const Microbe& parent);
-    Microbe& operator=(const Microbe& parent);
+    Microbe(const Microbe& other);
+    Microbe& operator=(const Microbe& other);
     void Live();
-    Microbe Reproduce();
+    
   
   private:
+    void _Mutate();
+    void _Reproduce();
+    void _Move();
+    void _Eat();
+    bool _IsDead();
     int _energy;
     int _x;
     int _y;

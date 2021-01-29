@@ -12,11 +12,11 @@ class Gene {
     Gene& operator=(const Gene& parentGene);
     Gene(const Gene& parentGene);
     void Randomize();
+    void Mutate();
     std::vector<float> getGenome();
   
   private:
     void _Normalize();
-    void _Mutate();
     std::vector<float> _genome = std::vector<float>(8);
     std::random_device _rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()
