@@ -16,8 +16,10 @@ class Microbe {
     Microbe& operator=(const Microbe& other);
     void Live();
     
+    
   
   private:
+    
     void _Mutate();
     void _Reproduce();
     void _Move();

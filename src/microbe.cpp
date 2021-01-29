@@ -33,6 +33,7 @@ Microbe& Microbe::operator=(const Microbe& other) {
     return *this;
 }
 
+
 void Microbe::_Move() {
   // select change from gene
   int change_direction = _gene.GetSegment();

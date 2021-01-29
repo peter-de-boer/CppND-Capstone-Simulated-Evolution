@@ -1,8 +1,15 @@
 #include "evolution.h"
+#include <algorithm>
 
 Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_params(config_params) {
 
 };
+
+Evolution::~Evolution() {
+    std::for_each(_threads.begin(), _threads.end(), [](std::thread &t) {
+        t.join();
+    });
+}
   
 void Evolution::_InitMicrobes() {
     std::uniform_int_distribution<int> disx = std::uniform_int_distribution<int>(0, _config_params->kGridWidth - 1);
@@ -19,7 +26,7 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for food: spawn new food every time step
   // start thread for microbes
   for(auto microbe : _microbes) {
-    microbe.Live();
+    _threads.emplace_back(std::thread(&Microbe::Live, microbe));
   }
   
 };
