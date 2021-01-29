@@ -1,10 +1,10 @@
 #include "microbe.h"
 
 
-Microbe::Microbe(std::shared_ptr<ConfigParams> config_params) {
-  _config_params = config_params;
-
-  _direction = kUp; // TODO: randomize as well
+Microbe::Microbe(int x, int y, int energy, Direction direction, 
+                 std::shared_ptr<ConfigParams> config_params) : 
+                 _x(x), _y(y), _direction(direction),
+                 _config_params(config_params) {
 };
 
 Microbe::Microbe(const Microbe& microbe) {

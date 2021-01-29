@@ -22,7 +22,7 @@ enum Direction {
 
 class Microbe {
   public:
-    Microbe(std::shared_ptr<ConfigParams> config_params);
+    Microbe(int x, int y, int energy, Direction direction, std::shared_ptr<ConfigParams> config_params);
     Microbe(const Microbe& parent);
     Microbe& operator=(const Microbe& parent);
     void Live();
