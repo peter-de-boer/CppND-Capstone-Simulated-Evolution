@@ -7,17 +7,7 @@
 
 #include "gene.h"
 #include "params.h"
-
-enum Direction {
-  kUp,
-  kUpRight,
-  kRight,
-  kDownRight,
-  kDown,
-  kDownLeft,
-  kLeft,
-  kUpLeft 
-};
+#include "direction.h"
 
 
 class Microbe {
