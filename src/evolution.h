@@ -17,9 +17,10 @@ class Evolution {
 
   private:
     void _InitMicrobes();
+    void _Cleanup();
   
     std::vector<std::vector<bool>> _food;
-    std::vector<Microbe> _microbes; // smart pointers?
+    std::vector<std::shared_ptr<Microbe>> _microbes; 
     std::shared_ptr<ConfigParams> _config_params;
   
     std::vector<std::thread> _threads;

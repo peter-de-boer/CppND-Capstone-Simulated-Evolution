@@ -15,6 +15,7 @@ class Microbe {
     Microbe(const Microbe& other);
     Microbe& operator=(const Microbe& other);
     void Live();
+    bool IsDead() const;
     
     
   
@@ -24,7 +25,6 @@ class Microbe {
     void _Reproduce();
     void _Move();
     void _Eat();
-    bool _IsDead();
     int _energy;
     int _x;
     int _y;

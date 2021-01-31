@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <thread>
+
 Microbe::Microbe(int x, int y, int energy, int direction, 
                  std::shared_ptr<ConfigParams> config_params) : 
                  _x(x), _y(y), _energy(energy),
@@ -58,12 +60,13 @@ void Microbe::_Move() {
 void Microbe::_Eat() {
 }
 
-bool Microbe::_IsDead() {
+bool Microbe::IsDead() const {
   return _energy <= 0;
 }
 
 void Microbe::Live() {
-  while (!_IsDead()) {
+  while (!IsDead()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     _Eat();
     _Reproduce();
     _Move();
