@@ -23,7 +23,7 @@ void Evolution::_InitMicrobes() {
 void Evolution::_Cleanup() {
   while (_microbes.size() > 0) {
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerCleanupCycle));
     _microbes.erase(
         std::remove_if(_microbes.begin(), _microbes.end(),
             [](const auto m) { return m->IsDead(); }), 

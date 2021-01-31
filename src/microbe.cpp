@@ -66,7 +66,7 @@ bool Microbe::IsDead() const {
 
 void Microbe::Live() {
   while (!IsDead()) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerMicrobeCycle));
     _Eat();
     _Reproduce();
     _Move();
