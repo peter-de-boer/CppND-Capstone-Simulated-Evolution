@@ -26,8 +26,8 @@ struct ConfigParams {
   const int kMsPerMicrobeCycle{100};
   const int kMsPerFoodSpawnCycle{100};
   const std::size_t kScreenWidth{640};
-  const std::size_t kScreenHeight{640};
-  const std::size_t kGridWidth{32};
+  const std::size_t kScreenHeight{320};
+  const std::size_t kGridWidth{64};
   const std::size_t kGridHeight{32};
   
   bool finished {false};

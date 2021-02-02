@@ -59,8 +59,8 @@ void Renderer::Render(std::vector<std::shared_ptr<Microbe>> microbes, std::share
   
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
-  for (int y=0; y<_config_params->kGridHeight; ++y) {
-    for (int x=0; x<_config_params->kGridWidth; ++x) {
+  for (int x=0; x<_config_params->kGridWidth; ++x) {
+     for (int y=0; y<_config_params->kGridHeight; ++y) {
       if ((*food)[x][y]) {
         SDL_RenderDrawPoint(sdl_renderer, x*block.w+dw, y*block.h+dh);
       }

@@ -24,9 +24,9 @@ void Evolution::_InitMicrobes() {
 void Evolution::_InitFood() {
   //uniform
   std::vector<std::vector<bool>> arr;
-  for (int y=0; y<_config_params->kGridHeight; ++y) {
+   for (int x=0; x<_config_params->kGridWidth; ++x) {
     std::vector<bool> row;
-    for (int x=0; x<_config_params->kGridWidth; ++x) {
+    for (int y=0; y<_config_params->kGridHeight; ++y) {
       row.emplace_back(_disr(_gen)<_config_params->init_food_density);
     }
     arr.emplace_back(row);
