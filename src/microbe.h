@@ -11,7 +11,9 @@
 
 class Microbe {
   public:
-    Microbe(int x, int y, int energy, int direction, std::shared_ptr<ConfigParams> config_params);
+    Microbe(int x, int y, int energy, int direction, 
+            std::shared_ptr<std::vector<std::vector<bool>>> food,
+            std::shared_ptr<ConfigParams> config_params);
     Microbe(const Microbe& other);
     Microbe& operator=(const Microbe& other);
     void Live();
@@ -37,8 +39,8 @@ class Microbe {
     std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<int> _disx;
     std::uniform_int_distribution<int> _disy;
+    std::shared_ptr<std::vector<std::vector<bool>>> _food;
   
-    std::vector<int> count {0,0,0,0,0,0,0,0};
 };
 
 #endif

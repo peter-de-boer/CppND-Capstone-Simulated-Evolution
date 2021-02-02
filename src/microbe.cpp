@@ -5,9 +5,11 @@
 #include <thread>
 
 Microbe::Microbe(int x, int y, int energy, int direction, 
+                 std::shared_ptr<std::vector<std::vector<bool>>> food,
                  std::shared_ptr<ConfigParams> config_params) : 
                  _x(x), _y(y), _energy(energy),
-                 _direction(direction),
+                 _direction(direction), 
+                 _food(food),
                  _config_params(config_params) {
   _gene.Randomize();
 };
@@ -17,6 +19,7 @@ Microbe::Microbe(const Microbe& other) {
     _x = other._x;
     _y = other._y;
     _direction = other._direction;
+    _food = other._food;
     _gene = other._gene;
     _config_params = other._config_params;
     _disx = other._disx;
@@ -28,6 +31,7 @@ Microbe& Microbe::operator=(const Microbe& other) {
     _x = other._x;
     _y = other._y;
     _direction = other._direction;
+    _food = other._food;
     _gene = other._gene;
     _config_params = other._config_params;
     _disx = other._disx;
@@ -60,6 +64,11 @@ void Microbe::_Move() {
 }
 
 void Microbe::_Eat() {
+  if ((*_food)[_y][_x]) {
+    (*_food)[_y][_x] = false;
+    _energy += _config_params->food_energy;
+    if (_energy > _config_params->max_energy) _energy = _config_params->max_energy;
+  }
 }
 
 bool Microbe::IsDead() const {
