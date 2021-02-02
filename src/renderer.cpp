@@ -37,6 +37,8 @@ void Renderer::Render(std::vector<std::shared_ptr<Microbe>> microbes, std::share
   SDL_Rect block;
   block.w = _config_params->kScreenWidth / _config_params->kGridWidth;
   block.h = _config_params->kScreenHeight / _config_params->kGridHeight;
+  int dw = block.w / 2;
+  int dh = block.h / 2;
 
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
@@ -50,11 +52,23 @@ void Renderer::Render(std::vector<std::shared_ptr<Microbe>> microbes, std::share
     if (!microbe->IsDead()) {
       SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
     } else {
-      SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+      SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF);
     }
     SDL_RenderFillRect(sdl_renderer, &block);
   }
   
+  // Render food
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+  for (int y=0; y<_config_params->kGridHeight; ++y) {
+    for (int x=0; x<_config_params->kGridWidth; ++x) {
+      if ((*food)[x][y]) {
+        SDL_RenderDrawPoint(sdl_renderer, x*block.w+dw, y*block.h+dh);
+      }
+    }
+  }
+      
+    
+      
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
 }
