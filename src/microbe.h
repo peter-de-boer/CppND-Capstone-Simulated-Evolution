@@ -16,6 +16,9 @@ class Microbe {
     Microbe& operator=(const Microbe& other);
     void Live();
     bool IsDead() const;
+  
+    int _x;
+    int _y;
     
     
   
@@ -26,8 +29,7 @@ class Microbe {
     void _Move();
     void _Eat();
     int _energy;
-    int _x;
-    int _y;
+    
     int _direction;
     Gene _gene; 
     std::shared_ptr<ConfigParams> _config_params;

@@ -5,6 +5,8 @@
 class Controller {
  public:
    Controller();
+    void HandleInput(bool &running) const;
+  
  private:
 
 };

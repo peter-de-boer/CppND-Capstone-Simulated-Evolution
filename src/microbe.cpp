@@ -38,6 +38,7 @@ Microbe& Microbe::operator=(const Microbe& other) {
 
 void Microbe::_Move() {
   // select change from gene
+  //std::cout << "move from " << _x << "," << _y << " to ";
   int change_direction = _gene.GetSegment();
   int _direction = (_direction + change_direction) % 8;
   int dx, dy;
@@ -54,6 +55,7 @@ void Microbe::_Move() {
   }
   _x = (_x + dx) % _config_params->kGridWidth;
   _y = (_y + dy) % _config_params->kGridHeight;
+  //std::cout << _x << "," << _y << "\n";
   _energy -= _config_params->change_direction_energy[change_direction];
 }
 
@@ -65,7 +67,7 @@ bool Microbe::IsDead() const {
 }
 
 void Microbe::Live() {
-  while (!IsDead()) {
+  while (!IsDead() && !_config_params->finished) {
     std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerMicrobeCycle));
     _Eat();
     _Reproduce();

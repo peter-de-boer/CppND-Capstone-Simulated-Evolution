@@ -18,6 +18,7 @@ class Evolution {
   private:
     void _InitMicrobes();
     void _Cleanup();
+    void _Render(Controller const &controller, Renderer &renderer);
   
     std::vector<std::vector<bool>> _food;
     std::vector<std::shared_ptr<Microbe>> _microbes; 
