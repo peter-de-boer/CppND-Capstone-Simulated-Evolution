@@ -33,7 +33,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 };
 
-void Renderer::Render(std::vector<std::shared_ptr<Microbe>> microbes) {
+void Renderer::Render(std::vector<std::shared_ptr<Microbe>> microbes, std::shared_ptr<std::vector<std::vector<bool>>> food) {
   SDL_Rect block;
   block.w = _config_params->kScreenWidth / _config_params->kGridWidth;
   block.h = _config_params->kScreenHeight / _config_params->kGridHeight;

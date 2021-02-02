@@ -21,6 +21,20 @@ void Evolution::_InitMicrobes() {
     _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, disd(_gen), _config_params));
 }
 
+void Evolution::_InitFood() {
+  //uniform
+  std::vector<std::vector<bool>> arr;
+  for (int y=0; y<_config_params->kGridHeight; ++y) {
+    std::vector<bool> row;
+    for (int x=0; x<_config_params->kGridWidth; ++x) {
+      row.emplace_back(_disr(_gen)<_config_params->init_food_density);
+    }
+    arr.emplace_back(row);
+  }
+  _food = std::make_shared<std::vector<std::vector<bool>>>(std::move(arr));
+}
+
+
 void Evolution::_Cleanup() {
   while (_microbes.size() > 0 && !_config_params->finished) {
 
@@ -47,7 +61,7 @@ void Evolution::_Render(Controller const &controller, Renderer &renderer) {
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running);
 
-    renderer.Render(_microbes);
+    renderer.Render(_microbes, _food);
 
     frame_end = SDL_GetTicks();
 
@@ -78,6 +92,7 @@ void Evolution::_Render(Controller const &controller, Renderer &renderer) {
 void Evolution::Run(Controller const &controller, Renderer &renderer) {
   
   _InitMicrobes();
+  _InitFood();
   // start thread controller: wait for input
   
   
