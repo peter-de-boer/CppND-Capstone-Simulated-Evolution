@@ -1,13 +1,14 @@
-#include "queue.h"
 #include <thread>
+
+#include <iostream>
 
 template <class T>
 T MessageQueue<T>::receive()
 {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     // perform queue modification under the lock
     std::unique_lock<std::mutex> uLock(_mutex);
     _cond.wait(uLock, [this] { return !_messages.empty(); }); // pass unique lock to condition variable
-  
     // remove last vector element from queue
     T msg = std::move(_messages.back());
     _messages.pop_back();

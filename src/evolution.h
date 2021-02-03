@@ -19,6 +19,7 @@ class Evolution {
   private:
     void _InitMicrobes();
     void _InitFood();
+    void _Add_New_Microbes();
     void _Cleanup();
     void _Render(Controller const &controller, Renderer &renderer);
   

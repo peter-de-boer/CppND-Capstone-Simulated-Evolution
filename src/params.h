@@ -11,9 +11,9 @@ enum FoodDistribution {
 };
 
 struct ConfigParams {
-  int food_energy {0};
+  int food_energy {40};
   int max_energy {1500};
-  int reproduce_energy {1000};
+  int reproduce_energy {120};
   int timestep_energy {1};
   std::vector<int> change_direction_energy {0, 1, 2, 4, 8, 4, 2, 1};
   

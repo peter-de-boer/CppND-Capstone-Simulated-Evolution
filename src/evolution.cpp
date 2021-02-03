@@ -5,7 +5,7 @@
 #include <functional>
 
 Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_params(config_params) {
-
+  _new_microbes = std::make_shared<MessageQueue<Microbe>>();
 };
 
 Evolution::~Evolution() {
@@ -38,6 +38,13 @@ void Evolution::_InitFood() {
   _food = std::make_shared<std::vector<std::vector<bool>>>(std::move(arr));
 }
 
+void Evolution::_Add_New_Microbes() {
+  while (!_config_params->finished) {
+    std::shared_ptr<Microbe> microbe = std::make_shared<Microbe>(std::move(_new_microbes->receive()));
+    _threads.emplace_back(std::thread(&Microbe::Live, microbe));
+    _microbes.emplace_back(microbe);
+  }
+}
 
 void Evolution::_Cleanup() {
   while (_microbes.size() > 0 && !_config_params->finished) {
@@ -104,9 +111,13 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for microbes
   for(auto microbe : _microbes) {
     _threads.emplace_back(std::thread(&Microbe::Live, microbe));
-
+    // might need to use futures in order to check if threads are finished so 
+    // they can be cleaned up
   }
 
+  // start thread for adding new microbes
+  std::thread tn(&Evolution::_Add_New_Microbes, this);
+  
   // start thread for cleaning up the list lof microbes
   std::thread tc(&Evolution::_Cleanup, this);
   
@@ -115,6 +126,7 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   
   tr.join();
   tc.join();
+  tn.join();
   
 
   
