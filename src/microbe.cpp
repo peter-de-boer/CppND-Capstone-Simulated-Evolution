@@ -42,9 +42,8 @@ Microbe& Microbe::operator=(const Microbe& other) {
 
 void Microbe::_Move() {
   // select change from gene
-  //std::cout << "move from " << _x << "," << _y << " to ";
   int change_direction = _gene.GetSegment();
-  int _direction = (_direction + change_direction) % 8;
+  _direction = (_direction + change_direction) % 8;
   int dx, dy;
   switch (_direction) {
       case 0: dx = -1; dy =  1; break;
@@ -57,10 +56,13 @@ void Microbe::_Move() {
       case 7: dx = -1; dy =  0; break;
       default: dx = 0; dy = 0;
   }
+ 
   _x = (_x + dx) % _config_params->kGridWidth;
   _y = (_y + dy) % _config_params->kGridHeight;
-  //std::cout << _x << "," << _y << "\n";
+  if (_x < 0) _x += _config_params->kGridWidth;
+  if (_y < 0) _y += _config_params->kGridHeight;
   _energy -= _config_params->change_direction_energy[change_direction];
+
 }
 
 void Microbe::_Eat() {
@@ -93,7 +95,7 @@ void Microbe::_Reproduce() {
   if (_energy >= _config_params->reproduce_energy) {
       _energy = _energy / 2;
       Microbe child = Microbe(*this);
-    child._Mutate();
+      child._Mutate();
   //return child;
   // use a message queue?
   //  send child to message Queueu

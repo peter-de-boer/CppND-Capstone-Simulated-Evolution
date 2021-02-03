@@ -11,7 +11,7 @@ enum FoodDistribution {
 };
 
 struct ConfigParams {
-  int food_energy {40};
+  int food_energy {0};
   int max_energy {1500};
   int reproduce_energy {1000};
   int timestep_energy {1};
@@ -19,16 +19,17 @@ struct ConfigParams {
   
   float init_food_density {0.2};
   float spawn_food_density {0.1};
+  int init_number_of_microbes {2};
 
   const int kFramesPerSecond{60};
   const int kMsPerFrame{15};
   const int kMsPerCleanupCycle{1000};
-  const int kMsPerMicrobeCycle{100};
+  const int kMsPerMicrobeCycle{500};
   const int kMsPerFoodSpawnCycle{100};
-  const std::size_t kScreenWidth{640};
-  const std::size_t kScreenHeight{320};
-  const std::size_t kGridWidth{80};
-  const std::size_t kGridHeight{40};
+  const int kScreenWidth{640};
+  const int kScreenHeight{320};
+  const int kGridWidth{20};
+  const int kGridHeight{10};
   
   bool finished {false};
 };

@@ -18,7 +18,10 @@ void Evolution::_InitMicrobes() {
     std::uniform_int_distribution<int> disx = std::uniform_int_distribution<int>(0, _config_params->kGridWidth - 1);
     std::uniform_int_distribution<int> disy = std::uniform_int_distribution<int>(0, _config_params->kGridHeight - 1);
     std::uniform_int_distribution<int> disd = std::uniform_int_distribution<int>(0, 7);
-    _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, disd(_gen), _food, _config_params));
+   for (int i; i < _config_params->init_number_of_microbes; ++i) {
+      _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, 
+                                                       disd(_gen), _food, _config_params));
+   }
 }
 
 void Evolution::_InitFood() {
@@ -98,13 +101,14 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for microbes
   for(auto microbe : _microbes) {
     _threads.emplace_back(std::thread(&Microbe::Live, microbe));
+
   }
+
   // start thread for cleaning up the list lof microbes
   std::thread tc(&Evolution::_Cleanup, this);
   
   // start thread for Renderer: update screen after each time step
   std::thread tr(&Evolution::_Render, this, std::ref(controller), std::ref(renderer));
-  
   
   tr.join();
   tc.join();
