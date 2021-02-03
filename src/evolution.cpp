@@ -20,7 +20,8 @@ void Evolution::_InitMicrobes() {
     std::uniform_int_distribution<int> disd = std::uniform_int_distribution<int>(0, 7);
    for (int i; i < _config_params->init_number_of_microbes; ++i) {
       _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, 
-                                                       disd(_gen), _food, _config_params));
+                                                       disd(_gen), _food, _config_params,
+                                                      _new_microbes));
    }
 }
 
@@ -92,10 +93,12 @@ void Evolution::_Render(Controller const &controller, Renderer &renderer) {
   _config_params->finished = true; // should trigger termination of all threads
 }
 
+
 void Evolution::Run(Controller const &controller, Renderer &renderer) {
   
   _InitFood();
   _InitMicrobes();
+
   // start thread controller: wait for input
   // start thread for food: spawn new food every time step
   // start thread for microbes

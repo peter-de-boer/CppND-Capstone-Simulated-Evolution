@@ -7,6 +7,7 @@
 #include "controller.h"
 #include "renderer.h"
 #include "microbe.h"
+#include "queue.h"
 
 
 class Evolution {
@@ -24,7 +25,8 @@ class Evolution {
     std::shared_ptr<std::vector<std::vector<bool>>> _food;
     std::vector<std::shared_ptr<Microbe>> _microbes; 
     std::shared_ptr<ConfigParams> _config_params;
-  
+    std::shared_ptr<MessageQueue<Microbe>> _new_microbes;
+    
     std::vector<std::thread> _threads;
   
     std::random_device _rd;  //Will be used to obtain a seed for the random number engine

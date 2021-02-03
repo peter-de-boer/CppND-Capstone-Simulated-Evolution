@@ -6,36 +6,70 @@
 
 Microbe::Microbe(int x, int y, int energy, int direction, 
                  std::shared_ptr<std::vector<std::vector<bool>>> food,
-                 std::shared_ptr<ConfigParams> config_params) : 
+                 std::shared_ptr<ConfigParams> config_params,
+                 std::shared_ptr<MessageQueue<Microbe>> new_microbes) : 
                  _x(x), _y(y), _energy(energy),
                  _direction(direction), 
                  _food(food),
-                 _config_params(config_params) {
+                 _config_params(config_params),
+                 _new_microbes(new_microbes) {
   _gene.Randomize();
 };
 
 Microbe::Microbe(const Microbe& other) {
-     _energy = other._energy;
+    _energy = other._energy;
     _x = other._x;
     _y = other._y;
     _direction = other._direction;
     _food = other._food;
     _gene = other._gene;
     _config_params = other._config_params;
+    _new_microbes = other._new_microbes;
     _disx = other._disx;
     _disy = other._disy;
 };
 
 Microbe& Microbe::operator=(const Microbe& other) {
-       _energy = other._energy;
+    _energy = other._energy;
     _x = other._x;
     _y = other._y;
     _direction = other._direction;
     _food = other._food;
     _gene = other._gene;
     _config_params = other._config_params;
+    _new_microbes = other._new_microbes;
     _disx = other._disx;
     _disy = other._disy;
+    return *this;
+}
+
+Microbe::Microbe(Microbe &&other) {
+    _energy = other._energy;
+    _x = other._x;
+    _y = other._y;
+    _direction = other._direction;
+    _food = other._food;
+    _gene = other._gene;
+    _config_params = other._config_params;
+    _new_microbes = other._new_microbes;
+    _disx = other._disx;
+    _disy = other._disy;
+}
+
+Microbe& Microbe::operator=(Microbe &&other) {
+    if (this == &other) return *this;
+
+    _energy = other._energy;
+    _x = other._x;
+    _y = other._y;
+    _direction = other._direction;
+    _food = other._food;
+    _gene = other._gene;
+    _config_params = other._config_params;
+    _new_microbes = other._new_microbes;
+    _disx = other._disx;
+    _disy = other._disy;
+
     return *this;
 }
 
@@ -90,16 +124,15 @@ void Microbe::_Mutate() {
   _gene.Mutate();
 }
 
+// if energy is high enough 
 // create a new microbe with the same genes, but slightly mutated
+// split energy between parent and child
 void Microbe::_Reproduce() {
   if (_energy >= _config_params->reproduce_energy) {
       _energy = _energy / 2;
       Microbe child = Microbe(*this);
       child._Mutate();
-  //return child;
-  // use a message queue?
-  //  send child to message Queueu
-  //  if queue receives a new child, add it to the list of microbes and trigger Live
+      _new_microbes->send(std::move(child));
   }
 };
 
