@@ -9,6 +9,7 @@ Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_para
   _new_microbes = std::make_shared<MessageQueue<Microbe>>();
   _thread_ids = std::make_shared<MessageQueue<std::thread::id>>();
   _food = std::make_shared<Food>();
+  _microbe_list = std::make_shared<MicrobeList>();
 };
 
 Evolution::~Evolution() {
@@ -24,7 +25,7 @@ void Evolution::_InitMicrobes() {
 
    for (int i=0; i < _config_params->init_number_of_microbes; ++i) {
 
-      _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, 
+      _microbe_list->microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, 
                                                        disd(_gen), _food, _config_params,
                                                       _new_microbes, _thread_ids));
    }
@@ -53,22 +54,28 @@ void Evolution::_Add_New_Microbes() {
           std::lock_guard<std::mutex> lock(_threads_mutex);
           _threads.emplace_back(std::thread(&Microbe::Live, microbe));
       }
-      std::lock_guard<std::mutex> lock(_microbes_mutex);
-      _microbes.emplace_back(microbe);
+      std::lock_guard<std::mutex> lock(_microbe_list->mx);
+      _microbe_list->microbes.emplace_back(microbe);
     }
   }
 }
 
 void Evolution::_Cleanup() {
-  while (_microbes.size() > 0 && !_config_params->finished) {
+  int size;
+  {
+      std::lock_guard<std::mutex> lock(_microbe_list->mx);
+      size = _microbe_list->microbes.size();
+  }
+  while (size > 0 && !_config_params->finished) {
 
     std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerCleanupCycle));
-    std::lock_guard<std::mutex> lock(_microbes_mutex);
-    _microbes.erase(
-        std::remove_if(_microbes.begin(), _microbes.end(),
+    std::lock_guard<std::mutex> lock(_microbe_list->mx);
+    _microbe_list->microbes.erase(
+        std::remove_if(_microbe_list->microbes.begin(), _microbe_list->microbes.end(),
             [](const auto m) { return m->IsDead(); }), 
-        _microbes.end()   
+        _microbe_list->microbes.end()   
     );
+    size = _microbe_list->microbes.size();
   }
 }
 
@@ -99,7 +106,7 @@ void Evolution::_Render(Controller const &controller, Renderer &renderer) {
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running);
 
-    renderer.Render(_microbes, _food);
+    renderer.Render(_microbe_list, _food);
 
     frame_end = SDL_GetTicks();
 
@@ -139,7 +146,7 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for food: spawn new food every time step
   // start thread for microbes
   
-  for(auto microbe : _microbes) {
+  for(auto microbe : _microbe_list->microbes) {
     std::lock_guard<std::mutex> lock(_threads_mutex);
     _threads.emplace_back(std::thread(&Microbe::Live, microbe));
   }

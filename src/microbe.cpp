@@ -121,12 +121,17 @@ bool Microbe::IsDead() const {
   return _energy <= 0;
 }
 
+void Microbe::_Spend_Energy() {
+  _energy -= _config_params->timestep_energy;
+}
+
 void Microbe::Live() {
   while (!IsDead() && !_config_params->finished) {
     std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerMicrobeCycle));
     _Eat();
     _Reproduce();
     _Move();
+    _Spend_Energy();
   } 
   _thread_ids->send(std::move(std::this_thread::get_id()));
 };

@@ -9,6 +9,7 @@
 #include "microbe.h"
 #include "queue.h"
 #include "food.h"
+#include "microbelist.h"
 
 
 class Evolution {
@@ -26,14 +27,14 @@ class Evolution {
     void _Render(Controller const &controller, Renderer &renderer);
   
     std::shared_ptr<Food> _food;
-    std::vector<std::shared_ptr<Microbe>> _microbes; 
+    std::shared_ptr<MicrobeList> _microbe_list;
+   
     std::shared_ptr<ConfigParams> _config_params;
     std::shared_ptr<MessageQueue<Microbe>> _new_microbes;
     std::shared_ptr<MessageQueue<std::thread::id>> _thread_ids;
     
     std::vector<std::thread> _threads;
     std::mutex _threads_mutex;
-    std::mutex _microbes_mutex;
   
     std::random_device _rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()

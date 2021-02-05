@@ -37,6 +37,7 @@ class Microbe {
     void _Reproduce();
     void _Move();
     void _Eat();
+    void _Spend_Energy();
     int _energy;
     
     int _direction;
