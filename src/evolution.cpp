@@ -8,6 +8,7 @@
 Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_params(config_params) {
   _new_microbes = std::make_shared<MessageQueue<Microbe>>();
   _thread_ids = std::make_shared<MessageQueue<std::thread::id>>();
+  _food = std::make_shared<Food>();
 };
 
 Evolution::~Evolution() {
@@ -20,11 +21,14 @@ void Evolution::_InitMicrobes() {
     std::uniform_int_distribution<int> disx = std::uniform_int_distribution<int>(0, _config_params->kGridWidth - 1);
     std::uniform_int_distribution<int> disy = std::uniform_int_distribution<int>(0, _config_params->kGridHeight - 1);
     std::uniform_int_distribution<int> disd = std::uniform_int_distribution<int>(0, 7);
-   for (int i; i < _config_params->init_number_of_microbes; ++i) {
+
+   for (int i=0; i < _config_params->init_number_of_microbes; ++i) {
+
       _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, 
                                                        disd(_gen), _food, _config_params,
                                                       _new_microbes, _thread_ids));
    }
+
 }
 
 void Evolution::_InitFood() {
@@ -37,14 +41,19 @@ void Evolution::_InitFood() {
     }
     arr.emplace_back(row);
   } 
-  _food = std::make_shared<std::vector<std::vector<bool>>>(std::move(arr));
+  _food->values = std::move(arr);
 }
 
 void Evolution::_Add_New_Microbes() {
+
   while (!_config_params->finished) {
     std::shared_ptr<Microbe> microbe = std::make_shared<Microbe>(std::move(_new_microbes->receive()));
     if (!_config_params->finished) {
-      _threads.emplace_back(std::thread(&Microbe::Live, microbe));
+      {
+          std::lock_guard<std::mutex> lock(_threads_mutex);
+          _threads.emplace_back(std::thread(&Microbe::Live, microbe));
+      }
+      std::lock_guard<std::mutex> lock(_microbes_mutex);
       _microbes.emplace_back(microbe);
     }
   }
@@ -54,6 +63,7 @@ void Evolution::_Cleanup() {
   while (_microbes.size() > 0 && !_config_params->finished) {
 
     std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerCleanupCycle));
+    std::lock_guard<std::mutex> lock(_microbes_mutex);
     _microbes.erase(
         std::remove_if(_microbes.begin(), _microbes.end(),
             [](const auto m) { return m->IsDead(); }), 
@@ -69,6 +79,7 @@ void Evolution::_CleanupThreads() {
     if (iter != _threads.end())
     {
         iter->join();
+        std::lock_guard<std::mutex> lock(_threads_mutex);
         _threads.erase(iter);
     }
   }
@@ -127,11 +138,10 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread controller: wait for input
   // start thread for food: spawn new food every time step
   // start thread for microbes
-  std::lock_guard<std::mutex> lock(threadMutex);
+  
   for(auto microbe : _microbes) {
+    std::lock_guard<std::mutex> lock(_threads_mutex);
     _threads.emplace_back(std::thread(&Microbe::Live, microbe));
-    // might need to use futures in order to check if threads are finished so 
-    // they can be cleaned up
   }
 
   // start thread for adding new microbes

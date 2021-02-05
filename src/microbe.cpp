@@ -8,7 +8,7 @@ Microbe::Microbe() {
 };
 
 Microbe::Microbe(int x, int y, int energy, int direction, 
-                 std::shared_ptr<std::vector<std::vector<bool>>> food,
+                 std::shared_ptr<Food> food,
                  std::shared_ptr<ConfigParams> config_params,
                  std::shared_ptr<MessageQueue<Microbe>> new_microbes,
                  std::shared_ptr<MessageQueue<std::thread::id>> thread_ids) : 
@@ -109,8 +109,9 @@ void Microbe::_Move() {
 }
 
 void Microbe::_Eat() {
-  if ((*_food)[_y][_x]) {
-    (*_food)[_y][_x] = false;
+  std::lock_guard<std::mutex> lock(_food->mx);
+  if ((_food->values)[_y][_x]) {
+    (_food->values)[_y][_x] = false;
     _energy += _config_params->food_energy;
     if (_energy > _config_params->max_energy) _energy = _config_params->max_energy;
   }
