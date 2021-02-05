@@ -10,12 +10,14 @@ Microbe::Microbe() {
 Microbe::Microbe(int x, int y, int energy, int direction, 
                  std::shared_ptr<std::vector<std::vector<bool>>> food,
                  std::shared_ptr<ConfigParams> config_params,
-                 std::shared_ptr<MessageQueue<Microbe>> new_microbes) : 
+                 std::shared_ptr<MessageQueue<Microbe>> new_microbes,
+                 std::shared_ptr<MessageQueue<std::thread::id>> thread_ids) : 
                  _x(x), _y(y), _energy(energy),
                  _direction(direction), 
                  _food(food),
                  _config_params(config_params),
-                 _new_microbes(new_microbes) {
+                 _new_microbes(new_microbes),
+                 _thread_ids(thread_ids) {
   _gene.Randomize();
 };
 
@@ -28,6 +30,7 @@ Microbe::Microbe(const Microbe& other) {
     _gene = other._gene;
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
+    _thread_ids = other._thread_ids;
     _disx = other._disx;
     _disy = other._disy;
 };
@@ -41,6 +44,7 @@ Microbe& Microbe::operator=(const Microbe& other) {
     _gene = other._gene;
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
+    _thread_ids = other._thread_ids;
     _disx = other._disx;
     _disy = other._disy;
     return *this;
@@ -55,6 +59,7 @@ Microbe::Microbe(Microbe &&other) {
     _gene = other._gene;
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
+    _thread_ids = other._thread_ids;
     _disx = other._disx;
     _disy = other._disy;
 }
@@ -70,6 +75,7 @@ Microbe& Microbe::operator=(Microbe &&other) {
     _gene = other._gene;
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
+    _thread_ids = other._thread_ids;
     _disx = other._disx;
     _disy = other._disy;
 
@@ -115,14 +121,13 @@ bool Microbe::IsDead() const {
 }
 
 void Microbe::Live() {
-  std::cout << "start Microbe::Live\n";
   while (!IsDead() && !_config_params->finished) {
     std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerMicrobeCycle));
     _Eat();
     _Reproduce();
     _Move();
-  }
-  std::cout << "finished Microbe::Live\n";
+  } 
+  _thread_ids->send(std::move(std::this_thread::get_id()));
 };
 
 void Microbe::_Mutate() {

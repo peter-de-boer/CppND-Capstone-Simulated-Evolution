@@ -1,6 +1,7 @@
 #include <thread>
 
 #include <iostream>
+#include <typeinfo>
 
 template <class T>
 T MessageQueue<T>::receive()
@@ -27,6 +28,7 @@ T MessageQueue<T>::receive()
 template <class T>
 void MessageQueue<T>::send(T &&msg)
 {
+
     // simulate some work
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
@@ -34,8 +36,11 @@ void MessageQueue<T>::send(T &&msg)
     std::lock_guard<std::mutex> uLock(_mutex);
 
     // add vector to queue
+
     _messages.push_back(std::move(msg));
+
     _cond.notify_one(); // notify client after pushing new Vehicle into vector
+
 }
 
 template <class T>

@@ -16,7 +16,8 @@ class Microbe {
     Microbe(int x, int y, int energy, int direction, 
             std::shared_ptr<std::vector<std::vector<bool>>> food,
             std::shared_ptr<ConfigParams> config_params,
-            std::shared_ptr<MessageQueue<Microbe>> new_microbes);
+            std::shared_ptr<MessageQueue<Microbe>> new_microbes,
+            std::shared_ptr<MessageQueue<std::thread::id>> thread_ids);
     Microbe(const Microbe& other);
     Microbe& operator=(const Microbe& other);
     Microbe(Microbe &&other);
@@ -46,6 +47,7 @@ class Microbe {
     std::uniform_int_distribution<int> _disy;
     std::shared_ptr<std::vector<std::vector<bool>>> _food;
     std::shared_ptr<MessageQueue<Microbe>> _new_microbes;
+    std::shared_ptr<MessageQueue<std::thread::id>> _thread_ids;
   
 };
 

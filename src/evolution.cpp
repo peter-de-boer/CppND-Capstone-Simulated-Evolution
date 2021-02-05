@@ -11,15 +11,9 @@ Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_para
 };
 
 Evolution::~Evolution() {
-    std::cout << "~Evolution\n";
-    //std::for_each(_threads.begin(), _threads.end(), [](std::thread &t) {
-    //    t.join();
-    //});
-    std::cout << "number of _threads: " << _threads.size() << "\n";
     for (std::thread &t : _threads) {
         if (t.joinable()) t.join();
     }
-    std::cout << "end of ~Evolution\n";
 }
   
 void Evolution::_InitMicrobes() {
@@ -29,7 +23,7 @@ void Evolution::_InitMicrobes() {
    for (int i; i < _config_params->init_number_of_microbes; ++i) {
       _microbes.emplace_back(std::make_shared<Microbe>(disx(_gen), disy(_gen), 100, 
                                                        disd(_gen), _food, _config_params,
-                                                      _new_microbes));
+                                                      _new_microbes, _thread_ids));
    }
 }
 
@@ -70,9 +64,7 @@ void Evolution::_Cleanup() {
 
 void Evolution::_CleanupThreads() {
   while (!_config_params->finished) {
-    std::cout << "before _thread_ids->receive()\n";
     std::thread::id id = _thread_ids->receive();
-    std::cout << "after _thread_ids->receive()\n";
     auto iter = std::find_if(_threads.begin(), _threads.end(), [=](std::thread &t) { return (t.get_id() == id); });
     if (iter != _threads.end())
     {
@@ -121,11 +113,9 @@ void Evolution::_Render(Controller const &controller, Renderer &renderer) {
       SDL_Delay(_config_params->kMsPerFrame - frame_duration);
     }
   }
-  std::cout << "Trigger finish\n";
   _config_params->finished = true; // should trigger termination of all threads
   _new_microbes->finish();
   _thread_ids->finish();
-  std::cout << "End of Trigger finish\n";
 }
 
 
@@ -138,13 +128,11 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for food: spawn new food every time step
   // start thread for microbes
   std::lock_guard<std::mutex> lock(threadMutex);
-  std::cout << "before adding microbes, number of _threads: " << _threads.size() << "\n";
   for(auto microbe : _microbes) {
     _threads.emplace_back(std::thread(&Microbe::Live, microbe));
     // might need to use futures in order to check if threads are finished so 
     // they can be cleaned up
   }
-  std::cout << "after adding microbes, number of _threads: " << _threads.size() << "\n";
 
   // start thread for adding new microbes
   std::thread tn(&Evolution::_Add_New_Microbes, this);
@@ -158,17 +146,9 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for Renderer: update screen after each time step
   std::thread tr(&Evolution::_Render, this, std::ref(controller), std::ref(renderer));
   
-  std::cout << "before tr.join()\n";
   tr.join();
-  std::cout << "before tt.join()\n";
   tt.join();
-  std::cout << "before tc.join()\n";
   tc.join();
-  std::cout << "before tn.join()\n";
   tn.join();
-  std::cout << "after tn.join()\n";
-  
-  
 
-  
 };
