@@ -12,6 +12,7 @@
 
 class Microbe {
   public:
+    Microbe();
     Microbe(int x, int y, int energy, int direction, 
             std::shared_ptr<std::vector<std::vector<bool>>> food,
             std::shared_ptr<ConfigParams> config_params,

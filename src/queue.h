@@ -11,8 +11,10 @@ class MessageQueue
 public:
     T receive();
     void send(T &&msg);
+    void finish();
    
 private:
+    bool _finished = false;
     std::mutex _mutex;
     std::condition_variable _cond;
     std::deque<T> _messages;

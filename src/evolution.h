@@ -21,14 +21,17 @@ class Evolution {
     void _InitFood();
     void _Add_New_Microbes();
     void _Cleanup();
+    void _CleanupThreads();
     void _Render(Controller const &controller, Renderer &renderer);
   
     std::shared_ptr<std::vector<std::vector<bool>>> _food;
     std::vector<std::shared_ptr<Microbe>> _microbes; 
     std::shared_ptr<ConfigParams> _config_params;
     std::shared_ptr<MessageQueue<Microbe>> _new_microbes;
+    std::shared_ptr<MessageQueue<std::thread::id>> _thread_ids;
     
     std::vector<std::thread> _threads;
+    std::mutex threadMutex;
   
     std::random_device _rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()

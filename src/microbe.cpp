@@ -4,6 +4,9 @@
 
 #include <thread>
 
+Microbe::Microbe() {
+};
+
 Microbe::Microbe(int x, int y, int energy, int direction, 
                  std::shared_ptr<std::vector<std::vector<bool>>> food,
                  std::shared_ptr<ConfigParams> config_params,
@@ -112,12 +115,14 @@ bool Microbe::IsDead() const {
 }
 
 void Microbe::Live() {
+  std::cout << "start Microbe::Live\n";
   while (!IsDead() && !_config_params->finished) {
     std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerMicrobeCycle));
     _Eat();
     _Reproduce();
     _Move();
   }
+  std::cout << "finished Microbe::Live\n";
 };
 
 void Microbe::_Mutate() {
