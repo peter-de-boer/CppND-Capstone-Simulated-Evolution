@@ -24,6 +24,9 @@ class Evolution {
     void _Add_New_Microbes();
     void _Cleanup();
     void _CleanupThreads();
+    void _SpawnFood();
+    void _SpawnFoodUniform();
+    void _SpawnFoodLines();
     void _Render(Controller const &controller, Renderer &renderer);
   
     std::shared_ptr<Food> _food;

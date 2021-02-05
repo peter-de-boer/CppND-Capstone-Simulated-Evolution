@@ -37,7 +37,9 @@ void Gene::Mutate() {
   // choose a random element from the genome
   // give it a new random number
   // and normalize again
-  _genome[_disi(_gen)] = _disr(_gen);
+  int n = _disi(_gen);
+  _genome[n] += _disr(_gen)-0.5;
+  if (_genome[n]<0.0) _genome[n] = 0.0;
   this->_Normalize();
 }
 

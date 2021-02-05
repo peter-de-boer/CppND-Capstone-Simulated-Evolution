@@ -45,6 +45,53 @@ void Evolution::_InitFood() {
   _food->values = std::move(arr);
 }
 
+
+void Evolution::_SpawnFoodUniform() {
+    std::lock_guard<std::mutex> lock(_food->mx);
+    for (int y=0; y<_config_params->kGridHeight; ++y) {
+        for (int x=0; x<_config_params->kGridWidth; ++x) {
+            if (_disr(_gen)<_config_params->spawn_food_density) {
+                _food->values[y][x] = true;
+            }
+        }
+    } 
+}
+
+void Evolution::_SpawnFoodLines() {
+    std::lock_guard<std::mutex> lock(_food->mx);
+    int d = _config_params->line_distance;
+    for (int y=d/2; y<_config_params->kGridHeight; y+=d) {
+        for (int x=0; x<_config_params->kGridWidth; ++x) {
+            if (_disr(_gen)<_config_params->line_density) {
+                _food->values[y][x] = true;
+            }
+        }
+    } 
+    for (int y=0; y<_config_params->kGridHeight; ++y) {
+        for (int x=d/2; x<_config_params->kGridWidth; x+=d) {
+            if (_disr(_gen)<_config_params->line_density) {
+                _food->values[y][x] = true;
+            }
+        }
+    } 
+    
+}
+
+void Evolution::_SpawnFood() {
+    while (!_config_params->finished) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(_config_params->kMsPerFoodSpawnCycle));
+        FoodDistribution d = _config_params->food_distribution;
+        switch (d) {
+          case kLines: 
+            _SpawnFoodLines();
+            break;
+          default:
+            _SpawnFoodUniform();
+        }
+    }
+};
+
+
 void Evolution::_Add_New_Microbes() {
 
   while (!_config_params->finished) {
@@ -160,10 +207,14 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for cleaning up threads of dead microbes;
   std::thread tt(&Evolution::_CleanupThreads, this);
   
+  // start thread for spawning food
+  std::thread tf(&Evolution::_SpawnFood, this);
+  
   // start thread for Renderer: update screen after each time step
   std::thread tr(&Evolution::_Render, this, std::ref(controller), std::ref(renderer));
   
   tr.join();
+  tf.join();
   tt.join();
   tc.join();
   tn.join();
