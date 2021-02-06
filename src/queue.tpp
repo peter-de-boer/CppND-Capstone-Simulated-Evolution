@@ -46,6 +46,7 @@ void MessageQueue<T>::send(T &&msg)
 template <class T>
 void MessageQueue<T>::finish()
 {
+    std::lock_guard<std::mutex> uLock(_mutex);
     _finished = true;
     _cond.notify_one();
 }

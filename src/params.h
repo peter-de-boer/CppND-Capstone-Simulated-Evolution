@@ -16,11 +16,11 @@ struct ConfigParams {
   int timestep_energy {1};
   std::vector<int> change_direction_energy {0, 1, 2, 4, 8, 4, 2, 1};
   
-  FoodDistribution food_distribution {kLines};
+  FoodDistribution food_distribution {kUniform};
   
   //uniform distribution params
-  float init_food_density {0.2};
-  float spawn_food_density {0.01};
+  float init_food_density {0.1};
+  float spawn_food_density {0.001};
   //line distribution params
   int line_distance {60};
   float line_density {0.1};
@@ -28,7 +28,7 @@ struct ConfigParams {
   int init_number_of_microbes {200};
 
   //const int kFramesPerSecond{60};
-  const int kMsPerFrame{100};
+  const int kMsPerFrame{50};
   const int kMsPerCleanupCycle{1000};
   const int kMsPerMicrobeCycle{10};
   const int kMsPerFoodSpawnCycle{100};

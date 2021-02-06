@@ -11,7 +11,7 @@ Renderer::Renderer(std::shared_ptr<ConfigParams> config_params) : _config_params
   }
 
   // Create Window
-  sdl_window = SDL_CreateWindow("SImulated Evolution", SDL_WINDOWPOS_CENTERED,
+  sdl_window = SDL_CreateWindow("Simulated Evolution", SDL_WINDOWPOS_CENTERED,
                                 SDL_WINDOWPOS_CENTERED, _config_params->kScreenWidth,
                                 _config_params->kScreenHeight, SDL_WINDOW_SHOWN);
 
@@ -47,18 +47,18 @@ void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr
  
   // Render microbes
   {
-  std::lock_guard<std::mutex> lck(microbe_list->mx);
-  for (auto microbe : microbe_list->microbes) {
+    std::lock_guard<std::mutex> lck(microbe_list->mx);
+    for (auto microbe : microbe_list->microbes) {
 
-    block.x = microbe->_x * block.w;
-    block.y = microbe->_y * block.h;
-    if (!microbe->IsDead()) {
-      SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
-    } else {
-      SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF);
+      block.x = microbe->_x * block.w;
+      block.y = microbe->_y * block.h;
+      if (!microbe->IsDead()) {
+        SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
+      } else {
+        SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF);
+      }
+      SDL_RenderFillRect(sdl_renderer, &block);
     }
-    SDL_RenderFillRect(sdl_renderer, &block);
-  }
   }
   
   // Render food
@@ -71,8 +71,14 @@ void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr
       }
     }
   }
-      
-    
+
+  SDL_Rect box;
+  box.x = 10;
+  box.y = 5;
+  box.w = 30;
+  box.h = 20;
+  SDL_SetRenderDrawColor(sdl_renderer, 0xAA, 0xFF, 0xAA, 0xFF);
+  SDL_RenderFillRect(sdl_renderer, &box);
       
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
