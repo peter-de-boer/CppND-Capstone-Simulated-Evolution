@@ -38,6 +38,7 @@ class Microbe {
     void _Move();
     void _Eat();
     void _Spend_Energy();
+    void _RandomDirection();
     int _energy;
     
     int _direction;
@@ -47,6 +48,7 @@ class Microbe {
     std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<int> _disx;
     std::uniform_int_distribution<int> _disy;
+    std::uniform_int_distribution<int> _disd {std::uniform_int_distribution<int>(0, 7)};
     std::shared_ptr<Food> _food;
     std::shared_ptr<MessageQueue<Microbe>> _new_microbes;
     std::shared_ptr<MessageQueue<std::thread::id>> _thread_ids;

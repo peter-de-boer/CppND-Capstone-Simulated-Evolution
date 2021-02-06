@@ -113,7 +113,6 @@ void Microbe::_Eat() {
   if ((_food->values)[_y][_x]) {
     (_food->values)[_y][_x] = false;
     _energy += _config_params->food_energy;
-    if (_energy > _config_params->max_energy) _energy = _config_params->max_energy;
   }
 }
 
@@ -140,6 +139,10 @@ void Microbe::_Mutate() {
   _gene.Mutate();
 }
 
+void Microbe::_RandomDirection() {
+  _direction = _disd(_gen);
+}
+
 // if energy is high enough 
 // create a new microbe with the same genes, but slightly mutated
 // split energy between parent and child
@@ -148,6 +151,7 @@ void Microbe::_Reproduce() {
       _energy = _energy / 2;
       Microbe child = Microbe(*this);
       child._Mutate();
+      child._RandomDirection();
       _new_microbes->send(std::move(child));
   }
 };
