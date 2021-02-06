@@ -46,8 +46,6 @@ class Microbe {
     std::shared_ptr<ConfigParams> _config_params;
     std::random_device _rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 _gen {_rd()}; //Standard mersenne_twister_engine seeded with rd()
-    std::uniform_int_distribution<int> _disx;
-    std::uniform_int_distribution<int> _disy;
     std::uniform_int_distribution<int> _disd {std::uniform_int_distribution<int>(0, 7)};
     std::shared_ptr<Food> _food;
     std::shared_ptr<MessageQueue<Microbe>> _new_microbes;

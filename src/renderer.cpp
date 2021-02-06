@@ -46,6 +46,7 @@ void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr
 
  
   // Render microbes
+  {
   std::lock_guard<std::mutex> lck(microbe_list->mx);
   for (auto microbe : microbe_list->microbes) {
 
@@ -57,6 +58,7 @@ void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr
       SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x00, 0xFF, 0xFF);
     }
     SDL_RenderFillRect(sdl_renderer, &block);
+  }
   }
   
   // Render food

@@ -31,8 +31,6 @@ Microbe::Microbe(const Microbe& other) {
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
     _thread_ids = other._thread_ids;
-    _disx = other._disx;
-    _disy = other._disy;
 };
 
 Microbe& Microbe::operator=(const Microbe& other) {
@@ -45,8 +43,6 @@ Microbe& Microbe::operator=(const Microbe& other) {
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
     _thread_ids = other._thread_ids;
-    _disx = other._disx;
-    _disy = other._disy;
     return *this;
 }
 
@@ -60,8 +56,6 @@ Microbe::Microbe(Microbe &&other) {
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
     _thread_ids = other._thread_ids;
-    _disx = other._disx;
-    _disy = other._disy;
 }
 
 Microbe& Microbe::operator=(Microbe &&other) {
@@ -76,8 +70,6 @@ Microbe& Microbe::operator=(Microbe &&other) {
     _config_params = other._config_params;
     _new_microbes = other._new_microbes;
     _thread_ids = other._thread_ids;
-    _disx = other._disx;
-    _disy = other._disy;
 
     return *this;
 }

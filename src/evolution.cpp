@@ -14,7 +14,9 @@ Evolution::Evolution(std::shared_ptr<ConfigParams> config_params) : _config_para
 
 Evolution::~Evolution() {
     for (std::thread &t : _threads) {
-        if (t.joinable()) t.join();
+        if (t.joinable()) {
+          t.join();
+        }
     }
 }
   
@@ -212,6 +214,24 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   
   // start thread for Renderer: update screen after each time step
   std::thread tr(&Evolution::_Render, this, std::ref(controller), std::ref(renderer));
+  
+  std::thread ta([this]() {
+    int m;
+    int t;
+    while (!_config_params->finished) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      {
+        std::lock_guard<std::mutex> lock(_threads_mutex);
+        m = _microbe_list->microbes.size();
+      }
+      {
+        std::lock_guard<std::mutex> lock(_threads_mutex);
+        t = _threads.size();
+      }
+      if (m!=t) std::cout << "number of microbes: " << m << "   number of threads: " << t << "\n";
+    }
+  });
+  ta.join();
   
   tr.join();
   tf.join();
