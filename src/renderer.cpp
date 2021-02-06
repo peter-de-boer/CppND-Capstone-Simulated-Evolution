@@ -33,7 +33,9 @@ Renderer::~Renderer() {
   SDL_Quit();
 };
 
-void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr<Food> food) {
+void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, 
+                      std::shared_ptr<Food> food,
+                      std::vector<SDL_Rect> boxes) {
   SDL_Rect block;
   block.w = _config_params->kScreenWidth / _config_params->kGridWidth;
   block.h = _config_params->kScreenHeight / _config_params->kGridHeight;
@@ -72,13 +74,16 @@ void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr
     }
   }
 
-  SDL_Rect box;
-  box.x = 10;
-  box.y = 5;
-  box.w = 30;
-  box.h = 20;
+  
   SDL_SetRenderDrawColor(sdl_renderer, 0xAA, 0xFF, 0xAA, 0xFF);
-  SDL_RenderFillRect(sdl_renderer, &box);
+  SDL_RenderFillRect(sdl_renderer, &boxes[0]);
+  
+  
+  SDL_SetRenderDrawColor(sdl_renderer, 0xAA, 0xAA, 0xAA, 0xFF);
+  SDL_RenderFillRect(sdl_renderer, &boxes[1]);
+  
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xAA, 0xAA, 0xFF);
+  SDL_RenderFillRect(sdl_renderer, &boxes[2]);
       
   // Update Screen
   SDL_RenderPresent(sdl_renderer);

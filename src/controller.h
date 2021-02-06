@@ -8,7 +8,8 @@
 class Controller {
  public:
    Controller();
-    void HandleInput(bool &running, std::shared_ptr<ConfigParams> config_params, SDL_Rect box) const;
+    void HandleInput(bool &running, std::shared_ptr<ConfigParams> config_params, 
+                     std::vector<SDL_Rect> boxes) const;
   
  private:
 

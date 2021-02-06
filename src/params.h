@@ -6,8 +6,7 @@
 enum FoodDistribution {
   kUniform,
   kLines,
-  kRectangles,
-  tMixed
+  kRectangle
 };
 
 struct ConfigParams {
@@ -24,6 +23,10 @@ struct ConfigParams {
   //line distribution params
   int line_distance {60};
   float line_density {0.1};
+  //rectangle distributon params
+  int rect_w {160};
+  int rect_h {120};
+  float rect_density {0.01};
   
   int init_number_of_microbes {200};
 

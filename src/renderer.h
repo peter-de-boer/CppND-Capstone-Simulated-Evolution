@@ -12,7 +12,7 @@ class Renderer {
  public:
   Renderer(std::shared_ptr<ConfigParams> config_params);
   ~Renderer();
-  void Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr<Food> food);
+  void Render(std::shared_ptr<MicrobeList> microbe_list, std::shared_ptr<Food> food, std::vector<SDL_Rect> boxes);
 
  private:
   SDL_Window *sdl_window;

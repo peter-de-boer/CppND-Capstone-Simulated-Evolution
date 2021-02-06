@@ -27,6 +27,7 @@ class Evolution {
     void _SpawnFood();
     void _SpawnFoodUniform();
     void _SpawnFoodLines();
+    void _SpawnFoodRectangle();
     void _Render(Controller const &controller, Renderer &renderer);
   
     std::shared_ptr<Food> _food;

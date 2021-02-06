@@ -75,8 +75,20 @@ void Evolution::_SpawnFoodLines() {
                 _food->values[y][x] = true;
             }
         }
+    }    
+}
+
+void Evolution::_SpawnFoodRectangle() {
+    std::lock_guard<std::mutex> lock(_food->mx);
+    int h = _config_params->kGridHeight;
+    int w = _config_params->kGridWidth;
+    for (int y=(h-_config_params->rect_h)/2; y<(h+_config_params->rect_h)/2; ++y) {
+        for (int x=(w-_config_params->rect_w)/2; x<(w+_config_params->rect_w)/2; ++x) {
+            if (_disr(_gen)<_config_params->rect_density) {
+                _food->values[y][x] = true;
+            }
+        }
     } 
-    
 }
 
 void Evolution::_SpawnFood() {
@@ -86,6 +98,9 @@ void Evolution::_SpawnFood() {
         switch (d) {
           case kLines: 
             _SpawnFoodLines();
+            break;
+          case kRectangle:
+            _SpawnFoodRectangle();
             break;
           default:
             _SpawnFoodUniform();
@@ -148,15 +163,15 @@ void Evolution::_Render(Controller const &controller, Renderer &renderer) {
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
-  SDL_Rect box {10,5,20,30};
+  std::vector<SDL_Rect> boxes {{10,5,30,20}, {50,5,30,20}, {90,5,30,20}};
 
   while (running) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, _config_params, box);
+    controller.HandleInput(running, _config_params, boxes);
 
-    renderer.Render(_microbe_list, _food);
+    renderer.Render(_microbe_list, _food, boxes);
 
     frame_end = SDL_GetTicks();
 
