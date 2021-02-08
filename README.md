@@ -15,7 +15,7 @@ See https://beltoforion.de/en/simulated_evolution/ for more details on the evolu
 
 This project is mainly to demonstrate concurrency. This means a lot is running in separate threads, e.g. each microbe run in its own thread, etc. At times, there are over 2000 threads running. There are probably more efficient solutions, but it is amazing to see that it works!
 
-
+![](images/simulated_evolution.png)
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
