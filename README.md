@@ -74,3 +74,7 @@ Each time a microbe dies:
 
 This way, all finished threads are joined, and the lists of microbes and threads are kept as small as possible.
 When the user quits the program, a flag is set to let all threads finish, so they can all be joined.
+
+# Project rubric satisfaction
+
+
