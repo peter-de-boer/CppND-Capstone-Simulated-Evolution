@@ -11,7 +11,7 @@ As a summary:
 
 See https://beltoforion.de/en/simulated_evolution/ for more details.
 
-This project is mainly to demonstrate my skills regarding concurrency. This means a lot is running in saparate threads, e.g. each microbe run in its own thread, etc. There are probably more efficient solutions, but it is amzing to see that it works!
+This project is mainly to demonstrate my skills regarding concurrency. This means a lot is running in saparate threads, e.g. each microbe run in its own thread, etc. There are probably more efficient solutions, but it is amazing to see that it works!
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -31,3 +31,21 @@ This project is mainly to demonstrate my skills regarding concurrency. This mean
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./SimulatedEvolution`.
+
+## Overview of code structure
+
+- main.cpp
+-- Initializes Renderer and Controller
+-- Intializes and runs the Evolution.
+- params.h
+- evolution.h, evolution.cpp
+-- Evolution class with methods...
+- controller.h, controller.cpp
+- renderer.h, renderer.cpp
+- microbe.h, microbe.cpp
+- gene.h, gene.cpp
+- queue.h, queue.tpp
+- food.h
+- microbelist.h
+
+  
