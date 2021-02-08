@@ -4,7 +4,7 @@ This is the repo for my Capstone project in the [Udacity C++ Nanodegree Program]
 
 In this project, a simulated evolution is run, based on https://beltoforion.de/en/simulated_evolution/. 
 As a summary:
-- In this evolution, microbes spend energy by moving, gain energy by easting food, reproduce themselves when they have gained enough energy, and die when their energy level becomes too low. Food is spawn randomly. 
+- In this evolution, microbes spend energy by moving, gain energy by eating food, reproduce themselves when they have gained enough energy, and die when their energy level becomes too low. New food is spawn randomly at regular time intervals.
 - The microbes have a genome which basically determines what the preferred direction to move is.
 - When a microbe reproduces, the genome of the child is slightly mutated compared to the parent.
 - When changing the way the food is spawned, the genes of the population adopt after a while. For example, if the food is spawned in lines, the microbes "learn" to move along the food lines (might take a while!).
