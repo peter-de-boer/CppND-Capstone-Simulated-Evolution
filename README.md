@@ -65,12 +65,12 @@ It starts threads for:
 - cleaning up the microbe list: deleting the vector elements of "dead" microbes.
 - cleaning up the list of microbe threads: joining the threads which are finished (i.e. those of dead microbes) and removing the respective vector elements.
 
-Each time a new microbe is created (at initialization or when a microbe reproduces:
-- the new microbe is added to the list of microbes (through a messagequeue).
-- the "life" of the Microbe is run in a new thread, which is added to the list of microbe threads.
+Each time a new microbe is created:
+- the new microbe is added to the list of microbes (through a message queue).
+- the "life" of the Microbe is run in a new thread; this new thread is added to the list of microbe threads.
 
 Each time a microbe dies:
-- its corresponding thread id is sent to the queue of finished threads
+- its corresponding thread id is sent to the queue of finished thread id's.
 
 This way, all finished threads are joined, and the lists of microbes and threads are kept as small as possible.
 When the user quits the program, a flag is set to let all threads finish, so they can all be joined.
