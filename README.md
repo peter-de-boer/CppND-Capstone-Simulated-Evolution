@@ -3,16 +3,19 @@
 This is the repo for my Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213).
 
 In this project, a simulated evolution is run, based on https://beltoforion.de/en/simulated_evolution/. 
+
 As a summary:
-- In this evolution, microbes spend energy by moving, gain energy by eating food, reproduce themselves when they have gained enough energy, and die when their energy level becomes too low. New food is spawn randomly at regular time intervals.
+- Microbes spend energy by moving, gain energy by eating food, reproduce themselves when they have gained enough energy, and die when their energy level becomes too low. New food is spawn randomly at regular time intervals.
 - The microbes have a genome which basically determines what the preferred direction to move is.
 - When a microbe reproduces, the genome of the child is slightly mutated compared to the parent.
 - When changing the way the food is spawned, the genes of the population adopt after a while. For example, if the food is spawned in lines, the microbes "learn" to move along the food lines (might take a while!).
-- When run, a window is shown with red dots, representing food, and blue moving dots, representing microbes. Clicking the buttons in the upper left corner will change the way food is spawn, whcih eventually leads to changing the way the microbes move. Watch and have fun!
+- When run, a window is shown with red dots, representing food, and blue moving dots, representing microbes. Clicking the buttons in the upper left corner will change the way food is spawn, which eventually leads to changing the way the microbes move. Watch and have fun!
 
 See https://beltoforion.de/en/simulated_evolution/ for more details on the evolution model.
 
-This project is mainly to demonstrate my skills regarding concurrency. This means a lot is running in separate threads, e.g. each microbe run in its own thread, etc. At times, there are over 2000 threads running. There are probably more efficient solutions, but it is amazing to see that it works!
+This project is mainly to demonstrate concurrency. This means a lot is running in separate threads, e.g. each microbe run in its own thread, etc. At times, there are over 2000 threads running. There are probably more efficient solutions, but it is amazing to see that it works!
+
+
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
