@@ -5,7 +5,6 @@
 #include <memory>
 #include "SDL.h"
 #include "params.h"
-#include "microbe.h"
 #include "microbelist.h"
 
 class Renderer {

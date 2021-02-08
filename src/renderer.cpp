@@ -75,9 +75,9 @@ void Renderer::Render(std::shared_ptr<MicrobeList> microbe_list,
   }
 
   
+  // render buttons
   SDL_SetRenderDrawColor(sdl_renderer, 0xAA, 0xFF, 0xAA, 0xFF);
   SDL_RenderFillRect(sdl_renderer, &boxes[0]);
-  
   
   SDL_SetRenderDrawColor(sdl_renderer, 0xAA, 0xAA, 0xAA, 0xFF);
   SDL_RenderFillRect(sdl_renderer, &boxes[1]);

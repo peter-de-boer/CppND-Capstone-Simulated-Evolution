@@ -1,6 +1,5 @@
 #include "gene.h"
 
-#include <iostream>
 
 Gene::Gene() {
 };

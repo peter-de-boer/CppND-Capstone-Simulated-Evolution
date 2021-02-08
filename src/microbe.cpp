@@ -1,7 +1,5 @@
 #include "microbe.h"
 
-#include <iostream>
-
 #include <thread>
 
 Microbe::Microbe() {

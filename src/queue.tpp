@@ -1,7 +1,5 @@
 #include <thread>
 
-#include <iostream>
-#include <typeinfo>
 
 template <class T>
 T MessageQueue<T>::receive()
