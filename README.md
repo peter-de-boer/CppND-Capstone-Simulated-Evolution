@@ -49,6 +49,7 @@ This project is mainly to demonstrate my skills regarding concurrency. This mean
 - gene.h, gene.cpp
   * Class to represent the genes of the microbes
 - queue.h, queue.tpp
+  * template message queue, for handling new microbes and finished threads.
 - food.h
   * Struct to keep the food array and the corresponding mutex together.
 - microbelist.h
