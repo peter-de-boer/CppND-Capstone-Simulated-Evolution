@@ -35,17 +35,41 @@ This project is mainly to demonstrate my skills regarding concurrency. This mean
 ## Overview of code structure
 
 - main.cpp
--- Initializes Renderer and Controller
--- Intializes and runs the Evolution.
+  * Initializes Renderer and Controller, and runs the simulated evolution.
 - params.h
+  * Configuration parameters, used throughout the program.
 - evolution.h, evolution.cpp
--- Evolution class with methods...
+  * Evolution class, see below.
 - controller.h, controller.cpp
+  * Class for handling user input (change food distribution, quit).
 - renderer.h, renderer.cpp
+  * Class for rendering the the simulation (microbes and food) using SDL2.
 - microbe.h, microbe.cpp
+  * Microbe class with methods for moving, reproducing etc.
 - gene.h, gene.cpp
+  * Class to represent the genes of the microbes
 - queue.h, queue.tpp
 - food.h
+  * Struct to keep the food array and the corresponding mutex together.
 - microbelist.h
+  * Struct to keep the list of microbes and the corresponding mutex together
 
-  
+### Evolution class
+
+This class is the central part of the program, and mainly consists of managing the many threads.
+It starts threads for:
+- each microbe
+- spawning food
+- rendering
+- cleaning up the microbe list: deleting the vector elements of "dead" microbes.
+- cleaning up the list of microbe threads: joining the threads which are finished (i.e. those of dead microbes) and removing the respective vector elements.
+
+Each time a new microbe is created (at initialization or when a microbe reproduces:
+- the new microbe is added to the list of microbes (through a messagequeue).
+- the "life" of the Microbe is run in a new thread, which is added to the list of microbe threads.
+
+Each time a microbe dies:
+- its corresponding thread id is sent to the queue of finished threads
+
+This way, all finished threads are joined, and the lists of microbes and threads are kept as small as possible.
+When the user quits the program, a flag is set to let all threads finish, so they can all be joined.
