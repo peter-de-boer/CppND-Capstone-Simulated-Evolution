@@ -7,7 +7,7 @@ As a summary:
 - In this evolution, microbes spend energy by moving, gain energy by easting food, reproduce themselves when they have gained enough energy, and die when their energy level becomes too low. Food is spawn randomly. 
 - The microbes have a genome which basically determines what the preferred direction to move is.
 - When a microbe reproduces, the genome of the child is slightly mutated compared to the parent.
-- When changing the way the food is spawned, the genes of the population adopt after a while. For example, if the food is spawned in lines, the microbes "learn" to move along the food lines.
+- When changing the way the food is spawned, the genes of the population adopt after a while. For example, if the food is spawned in lines, the microbes "learn" to move along the food lines (might take a while!).
 See https://beltoforion.de/en/simulated_evolution/ formore details.
 
 This project is mainly to demonstrate my skills regarding concurrency. This means a lot is running in saparate threads, e.g. each microbe run in its own thread, etc. There are probably more efficient solutions, but it is amzing to see that it works!
