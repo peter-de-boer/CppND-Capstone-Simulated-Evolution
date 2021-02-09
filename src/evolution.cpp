@@ -217,11 +217,10 @@ void Evolution::Run(Controller const &controller, Renderer &renderer) {
   // start thread for spawning food
   std::thread tf(&Evolution::_SpawnFood, this);
   
-  // start thread for Renderer: update screen after each time step
-  std::thread tr(&Evolution::_Render, this, std::ref(controller), std::ref(renderer));
+  // start Renderer, keep this in main thread
+  _Render(controller, renderer);
   
   
-  tr.join();
   tf.join();
   tt.join();
   tc.join();
